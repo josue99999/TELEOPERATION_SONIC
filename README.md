@@ -1,255 +1,152 @@
-<div align="center">
+# Meta Quest 3 — Teleoperación con Sonic
 
-  <img src="media/groot_wbc.png" width="800" alt="GEAR SONIC Header">
-
-  <!-- --- -->
-  
-  
-</div>
-
-<div align="center">
-
-[![License](https://img.shields.io/badge/License-Apache%202.0-76B900.svg)](LICENSE)
-[![IsaacLab](https://img.shields.io/badge/IsaacLab-2.3.0-orange.svg)](https://github.com/isaac-sim/IsaacLab/releases/tag/v2.3.0)
-[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-76B900.svg)](https://nvlabs.github.io/GR00T-WholeBodyControl/)
-
-</div>
+Guía completa para usar **Meta Quest 3** como controlador de teleoperación con GEAR-SONIC (G1 robot).
 
 ---
 
+## Requisitos
 
+- **Meta Quest 3** con controladores
+- **PC** con Ubuntu (o Linux compatible)
+- **Python 3.10**
+- **ADB** (Android Debug Bridge)
+- **Conexión**: USB o WiFi (misma red que el Quest)
 
+---
 
-# GR00T-WholeBodyControl
+## 1. Instalar ADB
 
-This is the codebase for the **GR00T Whole-Body Control (WBC)** projects. It hosts model checkpoints and scripts for training, evaluating, and deploying advanced whole-body controllers for humanoid robots. We currently support:
-
-- **Decoupled WBC**: the decoupled controller (RL for lower body, and IK for upper body) used in NVIDIA GR00T [N1.5](https://research.nvidia.com/labs/gear/gr00t-n1_5/) and [N1.6](https://research.nvidia.com/labs/gear/gr00t-n1_6/) models;
-- **GEAR-SONIC Series**: our latest iteration of generalist humanoid whole-body controllers (see our [whitepaper](https://nvlabs.github.io/GEAR-SONIC/)).
-
-## Table of Contents
-
-- [GEAR-SONIC](#gear-sonic)
-- [VR Whole-Body Teleoperation](#vr-whole-body-teleoperation)
-- [Kinematic Planner](#kinematic-planner)
-- [TODOs](#todos)
-- [What's Included](#whats-included)
-  - [Setup](#setup)
-- [Documentation](#documentation)
-- [Citation](#citation)
-- [License](#license)
-- [Support](#support)
-- [Decoupled WBC](#decoupled-wbc)
-
-
-## GEAR-SONIC 
-
-<p style="font-size: 1.2em;">
-    <a href="https://nvlabs.github.io/GEAR-SONIC/"><strong>Website</strong></a> | 
-    <a href="https://huggingface.co/nvidia/GEAR-SONIC"><strong>Model</strong></a> | 
-    <a href="https://arxiv.org/abs/2511.07820"><strong>Paper</strong></a> | 
-    <a href="https://nvlabs.github.io/GR00T-WholeBodyControl/"><strong>Docs</strong></a>
-  </p>
-
-<div align="center">
-  <img src="docs/source/_static/sonic-preview-gif-480P.gif" width="800" >
-  
-</div>
-
-SONIC is a humanoid behavior foundation model that gives robots a core set of motor skills learned from large-scale human motion data. Rather than building separate controllers for predefined motions, SONIC uses motion tracking as a scalable training task, enabling a single unified policy to produce natural, whole-body movement and support a wide range of behaviors — from walking and crawling to teleoperation and multi-modal control. It is designed to generalize beyond the motions it has seen during training and to serve as a foundation for higher-level planning and interaction.
-
-In this repo, we will release SONIC's training code, deployment framework, model checkpoints, and teleoperation stack for data collection.
-
-
-## VR Whole-Body Teleoperation
-
-SONIC supports real-time whole-body teleoperation via PICO VR headset, enabling natural human-to-robot motion transfer for data collection and interactive control.
-
-### Meta Quest 3
-
-También puedes usar **Meta Quest 3** como controlador de teleoperación. Ver la guía completa:
-
-**[→ Meta Quest 3 — Guía de instalación y uso](TELEOPERATION_QUEST_SETUP.md)**
-
-Requisitos: ADB, `meta_quest_teleop`, Quest en modo desarrollador. El script `install_scripts/install_pico.sh` instala las dependencias necesarias.
-
-<div align="center">
-<table>
-<tr>
-<td align="center"><b>Walking</b></td>
-<td align="center"><b>Running</b></td>
-</tr>
-<tr>
-<td align="center"><img src="media/teleop_walking.gif" width="400"></td>
-<td align="center"><img src="media/teleop_running.gif" width="400"></td>
-</tr>
-<tr>
-<td align="center"><b>Sideways Movement</b></td>
-<td align="center"><b>Kneeling</b></td>
-</tr>
-<tr>
-<td align="center"><img src="media/teleop_sideways.gif" width="400"></td>
-<td align="center"><img src="media/teleop_kneeling.gif" width="400"></td>
-</tr>
-<tr>
-<td align="center"><b>Getting Up</b></td>
-<td align="center"><b>Jumping</b></td>
-</tr>
-<tr>
-<td align="center"><img src="media/teleop_getup.gif" width="400"></td>
-<td align="center"><img src="media/teleop_jumping.gif" width="400"></td>
-</tr>
-<tr>
-<td align="center"><b>Bimanual Manipulation</b></td>
-<td align="center"><b>Object Hand-off</b></td>
-</tr>
-<tr>
-<td align="center"><img src="media/teleop_bimanual.gif" width="400"></td>
-<td align="center"><img src="media/teleop_switch_hands.gif" width="400"></td>
-</tr>
-</table>
-</div>
-
-## Kinematic Planner
-
-SONIC includes a kinematic planner for real-time locomotion generation — choose a movement style, steer with keyboard/gamepad, and adjust speed and height on the fly.
-
-<div align="center">
-<table>
-<tr>
-<td align="center" colspan="2"><b>In-the-Wild Navigation</b></td>
-</tr>
-<tr>
-<td align="center" colspan="2"><img src="media/planner/planner_in_the_wild_navigation.gif" width="800"></td>
-</tr>
-<tr>
-<td align="center"><b>Run</b></td>
-<td align="center"><b>Happy</b></td>
-</tr>
-<tr>
-<td align="center"><img src="media/planner/planner_run.gif" width="400"></td>
-<td align="center"><img src="media/planner/planner_happy.gif" width="400"></td>
-</tr>
-<tr>
-<td align="center"><b>Stealth</b></td>
-<td align="center"><b>Injured</b></td>
-</tr>
-<tr>
-<td align="center"><img src="media/planner/planner_stealth.gif" width="400"></td>
-<td align="center"><img src="media/planner/planner_injured.gif" width="400"></td>
-</tr>
-<tr>
-<td align="center"><b>Kneeling</b></td>
-<td align="center"><b>Hand Crawling</b></td>
-</tr>
-<tr>
-<td align="center"><img src="media/planner/planner_kneeling.gif" width="400"></td>
-<td align="center"><img src="media/planner/planner_hand_crawling.gif" width="400"></td>
-</tr>
-<tr>
-<td align="center"><b>Elbow Crawling</b></td>
-<td align="center"><b>Boxing</b></td>
-</tr>
-<tr>
-<td align="center"><img src="media/planner/planner_elbow_crawling.gif" width="400"></td>
-<td align="center"><img src="media/planner/planner_boxing.gif" width="400"></td>
-</tr>
-</table>
-</div>
-
-## TODOs
-
-- [x] Release pretrained SONIC policy checkpoints
-- [x] Open source C++ inference stack
-- [x] Setup documentation
-- [x] Open source teleoperation stack and demonstration scripts
-- [ ] Release training scripts and recipes for motion imitation and fine-tuning
-- [ ] Open source large-scale data collection workflows and fine-tuning VLA scripts. 
-- [ ] Publish additional preprocessed large-scale human motion datasets
-
-
-
-## What's Included
-
-This release includes:
-
-- **`gear_sonic_deploy`**: C++ inference stack for deploying SONIC policies on real hardware
-- **`gear_sonic`**: Teleoperation stack for collecting demonstration data (no training code, YET.)
-
-### Setup
-
-Clone the repository with Git LFS:
 ```bash
-git clone https://github.com/NVlabs/GR00T-WholeBodyControl.git
-cd GR00T-WholeBodyControl
+sudo apt update
+sudo apt install android-tools-adb android-tools-fastboot
+```
+
+Verificar:
+
+```bash
+adb version
+adb devices
+```
+
+### Permisos USB (si aparece "no permissions")
+
+```bash
+sudo bash -c 'cat > /etc/udev/rules.d/51-android.rules' << 'EOF'
+SUBSYSTEM=="usb", ATTR{idVendor}=="2833", MODE="0666", GROUP="plugdev"
+EOF
+
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
+Desconecta y vuelve a conectar el Quest. Acepta el diálogo de depuración USB en el visor.
+
+---
+
+## 2. Configurar el Quest 3
+
+1. **Modo desarrollador**: Actívalo desde la app Meta Quest en el móvil (Ajustes → Modo desarrollador).
+2. **En el Quest**: Ajustes → Sistema → **Developer** → activa **USB Debugging**.
+3. **APK de teleop**: El paquete `meta_quest_teleop` instala automáticamente el APK al conectarte. Acepta la instalación cuando aparezca.
+
+---
+
+## 3. Clonar e instalar el proyecto
+
+```bash
+git clone https://github.com/josue99999/TELEOPERATION_SONIC.git
+cd TELEOPERATION_SONIC
 git lfs pull
 ```
 
-## Documentation
+### Entorno de teleoperación (incluye meta_quest_teleop)
 
-📚 **[Full Documentation](https://nvlabs.github.io/GR00T-WholeBodyControl/)**
+```bash
+bash install_scripts/install_pico.sh
+```
 
-### Getting Started
-- [Installation Guide](https://nvlabs.github.io/GR00T-WholeBodyControl/getting_started/installation_deploy.html)
-- [Quick Start](https://nvlabs.github.io/GR00T-WholeBodyControl/getting_started/quickstart.html)
-- [VR Teleoperation Setup](https://nvlabs.github.io/GR00T-WholeBodyControl/getting_started/vr_teleop_setup.html)
+Esto crea `.venv_teleop` con `gear_sonic[teleop]`, que ya incluye `meta_quest_teleop`.
 
-### Tutorials
-- [Keyboard Control](https://nvlabs.github.io/GR00T-WholeBodyControl/tutorials/keyboard.html)
-- [Gamepad Control](https://nvlabs.github.io/GR00T-WholeBodyControl/tutorials/gamepad.html)
-- [ZMQ Communication](https://nvlabs.github.io/GR00T-WholeBodyControl/tutorials/zmq.html)
-- [ZMQ Manager / PICO VR](https://nvlabs.github.io/GR00T-WholeBodyControl/tutorials/vr_wholebody_teleop.html)
+Activar:
 
-### Best Practices
-- [Teleoperation](https://nvlabs.github.io/GR00T-WholeBodyControl/user_guide/teleoperation.html)
-
-
-
-
-
-
----
-
-## Citation
-
-If you use GEAR-SONIC in your research, please cite:
-
-```bibtex
-@article{luo2025sonic,
-    title={SONIC: Supersizing Motion Tracking for Natural Humanoid Whole-Body Control},
-    author={Luo, Zhengyi and Yuan, Ye and Wang, Tingwu and Li, Chenran and Chen, Sirui and Casta\~neda, Fernando and Cao, Zi-Ang and Li, Jiefeng and Minor, David and Ben, Qingwei and Da, Xingye and Ding, Runyu and Hogg, Cyrus and Song, Lina and Lim, Edy and Jeong, Eugene and He, Tairan and Xue, Haoru and Xiao, Wenli and Wang, Zi and Yuen, Simon and Kautz, Jan and Chang, Yan and Iqbal, Umar and Fan, Linxi and Zhu, Yuke},
-    journal={arXiv preprint arXiv:2511.07820},
-    year={2025}
-}
+```bash
+source .venv_teleop/bin/activate
 ```
 
 ---
 
-## License
+## 4. Probar la conexión
 
-This project uses dual licensing:
+```bash
+# Con Quest conectado por USB
+python -m gear_sonic.utils.teleop.readers.quest_reader --test-adb
+```
 
-- **Source Code**: Licensed under Apache License 2.0 - applies to all code, scripts, and software components in this repository
-- **Model Weights**: Licensed under NVIDIA Open Model License - applies to all trained model checkpoints and weights
-
-See [LICENSE](LICENSE) for the complete dual-license text.
-
-Please review both licenses before using this project. The NVIDIA Open Model License permits commercial use with attribution and requires compliance with NVIDIA's Trustworthy AI terms.
-
-All required legal documents, including the Apache 2.0 license, 3rd-party attributions, and DCO language, are consolidated in the /legal folder of this repository.
+Deberías ver `ADB connection OK` y el modelo del dispositivo.
 
 ---
 
-## Support
+## 5. Validar tracking (visualización 3D)
 
-For questions and issues, please contact the GEAR WBC team at [gear-wbc@nvidia.com](gear-wbc@nvidia.com) to provide feedback! 
+Antes de usar Sonic, comprueba que el tracking del Quest funciona:
 
-## Decoupled WBC
+```bash
+# USB
+python -m gear_sonic.utils.teleop.readers.validate_quest_raw
 
-For the Decoupled WBC used in GR00T N1.5 and N1.6 models, please refer to the [Decoupled WBC documentation](docs/source/references/decoupled_wbc.md).
+# WiFi (sustituye por la IP de tu Quest)
+python -m gear_sonic.utils.teleop.readers.validate_quest_raw --ip-address 192.168.x.x
+```
 
+Mueve los mandos y verifica que la visualización sigue. Ejes: **X=adelante (rojo)**, **Y=izquierda (verde)**, **Z=arriba (azul)**.
 
-## Acknowledgments
-We would like to acknowledge the following projects from which parts of the code in this repo are derived from:
-- [Beyond Mimic](https://github.com/HybridRobotics/whole_body_tracking)
-- [Isaac Lab](https://github.com/isaac-sim/IsaacLab)
+### Modo calibrado (G1 como referencia)
+
+```bash
+python -m gear_sonic.utils.teleop.readers.validate_quest_raw --calibrated
+```
+
+1. Pon el G1 en su **pose por defecto**.
+2. Adopta la **misma pose** con los controladores.
+3. Pulsa el **trigger derecho** para calibrar.
+4. A partir de ahí, la salida es: `pose_G1_default + delta_movimiento`.
+
+---
+
+## 6. Usar Quest con Sonic
+
+```bash
+python gear_sonic/scripts/pico_manager_thread_server.py \
+    --manager \
+    --reader quest
+```
+
+Por WiFi:
+
+```bash
+python gear_sonic/scripts/pico_manager_thread_server.py \
+    --manager \
+    --reader quest \
+    --quest-ip-address 192.168.x.x
+```
+
+**Calibración**: Igual que en `validate_quest_raw`: adopta la pose por defecto del G1 y pulsa **trigger derecho**.
+
+---
+
+## Resumen de comandos
+
+| Acción | Comando |
+|--------|---------|
+| Probar ADB | `python -m gear_sonic.utils.teleop.readers.quest_reader --test-adb` |
+| Validar tracking (raw) | `python -m gear_sonic.utils.teleop.readers.validate_quest_raw` |
+| Validar tracking (calibrado) | `python -m gear_sonic.utils.teleop.readers.validate_quest_raw --calibrated` |
+| Sonic con Quest | `python gear_sonic/scripts/pico_manager_thread_server.py --manager --reader quest` |
+
+---
+
+## Solución de problemas
+
+- **"No devices found"**: Revisa USB, modo desarrollador y depuración USB. Prueba `adb kill-server && adb start-server`.
+- **"meta_quest_teleop no instalado"**: Ejecuta `bash install_scripts/install_pico.sh` y activa `.venv_teleop`.
+- **Las manos van en dirección equivocada**: El reader corrige los ejes automáticamente. Si algo falla, usa `validate_quest_raw --calibrated` para comprobar.
