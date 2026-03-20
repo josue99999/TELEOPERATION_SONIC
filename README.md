@@ -2,6 +2,7 @@
 
 Guía completa para usar **Meta Quest 3** como controlador de teleoperación con GEAR-SONIC (G1 robot).
 
+![Teleoperation demo](TELEOPERACION_G1.gif)
 ---
 
 ## Requisitos
